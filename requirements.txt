@@ -1,0 +1,5 @@
+ultralytics
+tensorflow
+streamlit
+streamlit-authenticator
+streamlit-extras
