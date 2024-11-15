@@ -1,5 +1,5 @@
-cv2
 gtts
+opencv-python==4.10.0.84
 ultralytics
 tensorflow
 streamlit
