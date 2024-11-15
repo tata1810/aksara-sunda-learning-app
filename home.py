@@ -12,8 +12,9 @@ for key in st.session_state.keys():
     del st.session_state[key]
 
 st.markdown("""
-            # :wave:  Wilujeng Belajar Aksara Sunda
-            `Silahkan sign up atau log in jika sudah memiliki akun`
+            # :wave:  **Wilujeung Sumping di Pembelajaran Aksara Sunda**
+            
+            ##### Silahkan sign up atau log in jika sudah memiliki akun
             ---
             """)
 
