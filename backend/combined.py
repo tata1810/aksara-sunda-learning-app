@@ -51,7 +51,7 @@ class CombinedModels:
         detections = self.sort_detections(detections)
 
         detected_labels = []
-        for i, (x1, y1, x2, y2, confidence, names) in enumerate(detections):
+        for _, (x1, y1, x2, y2, confidence, names) in enumerate(detections):
             cropped = yolo_image[int(float(y1)): int(float(y2)),
                                 int(float(x1)): int(float(x2))]
             effnet_image = self.preprocess_for_effnet(cropped)
