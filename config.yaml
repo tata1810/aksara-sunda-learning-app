@@ -1,27 +1,27 @@
 cookie:
   expiry_days: 30
-  key: some_signature_key
+  key: some_key
   name: some_cookie_name
 credentials:
   usernames:
-    angel:
+    agatha:
       email: Agatha@gmail.com
       failed_login_attempts: 0
       first_name: Agatha
       last_name: Angelina
-      level1: 13
-      level1_passed: true
-      level2: 14
-      level2_passed: true
+      level1: 0
+      level1_passed: false
+      level2: 0
+      level2_passed: false
       level3: 0
       level3_passed: false
-      logged_in: true
-      password: $2b$12$nmL3CMD5gx/Yc9sVWIDbwOP5KpeBtsdkqzhMTZ1iwpiOPVTUrB7mK
+      logged_in: false
+      password: $2b$12$.seqrSfWbEEuYuEx2uvbDe4L1pIsDvMKjkufPp/0L3rszVWlu7.IO
       password_hint: Agatha18*
       posttest: 0
       posttest_taken: false
-      pretest: 3
-      pretest_taken: true
+      pretest: 0
+      pretest_taken: false
       roles: null
 oauth2:
   google:
@@ -35,4 +35,4 @@ oauth2:
     tenant_id: null
 pre-authorized:
   emails:
-  - jonathansaputra03@gmail.com
+  - melsby@gmail.com
