@@ -212,6 +212,7 @@ else:
                     config['credentials']['usernames'][st.session_state.username]['level1'] = st.session_state.level1_score
                     config['credentials']['usernames'][st.session_state.username]['level1_passed'] = True
                     st.session_state.level1_passed = True
+                    st.session_state.current_question = 0
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
                     switch_page('index')
@@ -225,6 +226,8 @@ else:
                     config['credentials']['usernames'][st.session_state.username]['level1'] = st.session_state.level1_score
                     config['credentials']['usernames'][st.session_state.username]['level1_passed'] = True
                     st.session_state.level1_passed = True
+                    st.session_state.current_question = 0
+
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
                     switch_page('index')

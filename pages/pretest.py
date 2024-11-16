@@ -166,6 +166,7 @@ with st.container():
             config['credentials']['usernames'][st.session_state.username]['pretest_taken'] = True
 
             st.session_state.pretest_taken = True
+            st.session_state.current_question = 0
 
             with open('config.yaml', 'w', encoding='utf-8') as file:
                 yaml.dump(config, file, default_flow_style=False)
