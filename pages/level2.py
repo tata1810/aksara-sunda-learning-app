@@ -7,12 +7,10 @@ from yaml.loader import SafeLoader
 from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(
-    page_title='LEVEL 2',
+    page_title='Tingkat 2',
     layout='centered',
     initial_sidebar_state='collapsed'
 )
-
-st.write(st.session_state)
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -35,117 +33,108 @@ if st.session_state.level2_passed:
     st.error("Level ini sudah selesai dikerjakan, silahkan lanjut ke level berikutnya")
     if st.button("Kembali"):
         switch_page("index")
-    st.stop()
 else:
     questions = [
         {
-            "question": "Karakter aksara sunda apakah ini?",
-            "image": "assets/ga.png",
-            "options": ["ngalagena-ga", "swara-i", "rarangken-i", "ngalagena-nga"],
-            "answer": "ngalagena-ga"
-        },
-        {
-            "question": "Manakah yang merupakan karakter ngalagena-ma?",
+            "question": "Manakah yang merupakan karakter rarangken-eu?",
             "image_options": {
-                "a": "assets/ga.png",
-                "b": "assets/wa.png",
-                "c": "assets/ma.png",
-                "d": "assets/a.png"
-            },
-            "answer": "c"
-        },
-        {
-            "question": "Karakter aksara sunda apakah ini?",
-            "image": "assets/xa.png",
-            "options": ["ngalagena-ma", "ngalagena-xa", "ngalagena-ba", "ngalagena-ka"],
-            "answer": "ngalagena-xa"
-        },
-        {
-            "question": "Karakter aksara sunda apakah ini? (contoh penulisan : swara-a)",
-            "image": "assets/ya.png",
-            "answer": "ngalagena-ya"
-        },
-        {
-            "question": "Manakah yang merupakan karakter ngalagena-fa?",
-            "image_options": {
-                "a": "assets/ha.png",
-                "b": "assets/fa.png",
-                "c": "assets/pa.png",
-                "d": "assets/ma.png"
-            },
-            "answer": "b"
-        },
-        {
-            "question": "Karakter aksara sunda apakah ini? (contoh penulisan : swara-a)",
-            "image": "assets/va.png",
-            "answer": "ngalagena-va"
-        },
-        {
-            "question": "Karakter aksara sunda apakah ini?",
-            "image": "assets/u.png",
-            "options": ["swara-u", "swara-i", "rarangken-u", "ngalagena-nga"],
-            "answer": "swara-u"
-        },
-        {
-            "question": "Karakter aksara sunda apakah ini? (contoh penulisan : swara-a)",
-            "image": "assets/e.png",
-            "answer": "swara-e"
-        },
-        {
-            "question": "Manakah yang merupakan karakter ngalagena-za?",
-            "image_options": {
-                "a": "assets/o.png",
-                "b": "assets/ga.png",
-                "c": "assets/nga.png",
-                "d": "assets/za.png"
+                "a": "assets/rarangken-u.jpg",
+                "b": "assets/rarangken-i.jpg",
+                "c": "assets/rarangken-o.jpg",
+                "d": "assets/rarangken-eu.jpg"
             },
             "answer": "d"
         },
         {
-            "question": "Karakter aksara sunda apakah ini?",
-            "image": "assets/sa.png",
-            "options": ["ngalagena-ra", "swara-e", "rarangken-ya", "ngalagena-sa"],
-            "answer": "ngalagena-sa"
+            "question": "Karakter aksara Sunda apakah ini?",
+            "image": "assets/rarangken-i.jpg",
+            "options": ["rarangken-e", "rarangken-i", "rarangken-u", "rarangken-o"],
+            "answer": "rarangken-i"
         },
         {
-            "question": "Karakter aksara sunda apakah ini?",
-            "image": "assets/wa.png",
-            "options": ["ngalagena-ga", "swara-u", "ngalagena-wa", "ngalagena-fa"],
-            "answer": "ngalagena-wa"
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan : rarangken-e)",
+            "image": "assets/rarangken-o.jpg",
+            "answer": "rarangken-o"
         },
         {
-            "question": "Manakah yang merupakan karakter swara-u?",
+            "question": "Manakah yang merupakan karakter rarangken-ya?",
             "image_options": {
-                "a": "assets/za.png",
-                "b": "assets/u.png",
-                "c": "assets/i.png",
-                "d": "assets/nga.png"
-            },
-            "answer": "b"
-        },
-        {
-            "question": "Karakter Aksara Sunda apakah ini? (contoh penulisan : swara-a)",
-            "image": "assets/nga.png",
-            "answer": "ngalagena-nga"
-        },
-        {
-            "question": "Manakah yang merupakan karakter Rarangken-ka?",
-            "image_options": {
-                "a": "assets/ka.png",
-                "b": "assets/sa.png",
-                "c": "assets/ra.png",
-                "d": "assets/xa.png"
+                "a": "assets/rarangken-eu.jpg",
+                "b": "assets/rarangken-u.jpg",
+                "c": "assets/rarangken-ya.jpg",
+                "d": "assets/rarangken-ra.jpg"
             },
             "answer": "c"
         },
         {
-            "question": "Manakah yang merupakan karakter Rarangken-da?",
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan : rarangken-e)",
+            "image": "assets/rarangken-e.jpg",
+            "answer": "rarangken-e"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan : rarangken-e)",
+            "image": "assets/rarangken-ra.jpg",
+            "options": ["rarangken-r", "rarangken-h", "rarangken-ra", "rarangken-i"],
+            "answer": "rarangken-ra"
+        },
+        {
+            "question": "Manakah yang merupakan karakter rarangken-u?",
             "image_options": {
-                "a": "assets/ja.png",
-                "b": "assets/ba.png",
-                "c": "assets/nya.png",
-                "d": "assets/da.png"
+                "a": "assets/rarangken-o.jpg",
+                "b": "assets/rarangken-u.jpg",
+                "c": "assets/rarangken-eu.jpg",
+                "d": "assets/rarangken-e.jpg"
             },
+            "answer": "b"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan : rarangken-e)",
+            "image": "assets/rarangken-eu.jpg",
+            "answer": "rarangken-eu"
+        },
+        {
+            "question": "Manakah yang merupakan karakter 'ngra'?",
+            "image_options": {
+                "a": "assets/gar.jpg",
+                "b": "assets/ngra.jpg",
+                "c": "assets/gra.jpg",
+                "d": "assets/ngar.jpg"
+            },
+            "answer": "b"
+        },
+        {
+            "question": "Kata aksara Sunda apakah yang ditulis (contoh penulisan : ha)",
+            "image": "assets/geu.jpg",
+            "answer": "geu"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini?",
+            "image": "assets/mo.jpg",
+            "answer": "mo"
+        },
+        {
+            "question": "Manakah yang merupakan karakter 'lé'?",
+            "image_options": {
+                "a": "assets/lo.jpg",
+                "b": "assets/la.jpg",
+                "c": "assets/lee.jpg",
+                "d": "assets/l.jpg"
+            },
+            "answer": "c"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan: ha)",
+            "image": "assets/ke.jpg",
+            "answer": "ke"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan: ha)",
+            "image": "assets/tya.jpg",
+            "answer": "tya"
+        },
+        {
+            "question": "Karakter aksara Sunda apakah ini? (contoh penulisan: ha)",
+            "image": "assets/d.jpg",
             "answer": "d"
         }
     ]
@@ -156,10 +145,13 @@ else:
         st.session_state.current_question = 0
 
     authenticator.logout()
-    st.header('Level 2')
+    if st.button(label='Back'):
+        switch_page('index')
+    st.header('Tingkat 2')
 
     with st.container():
         if st.session_state.current_question < len(questions):
+            st.warning('Tidak dapat kembali ke soal berikutnya, harap dikerjakan dengan baik sesuai instruksi')
             q = questions[st.session_state.current_question]
             st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])
@@ -186,9 +178,6 @@ else:
                 user_answer = st.text_input('Masukan jawaban:', key=f'q{st.session_state.current_question}')
 
             prev_soal, next_soal = st.columns(2)
-
-            if st.session_state.current_question < len(questions) - 1:
-                st.warning('Tidak dapat kembali ke soal berikutnya, harap dikerjakan dengan baik sesuai instruksi')
 
             if st.button(label='Jawab', type='primary', use_container_width=True):
                 if user_answer.lower() == q['answer'].lower():
@@ -218,7 +207,7 @@ else:
                     config['credentials']['usernames'][st.session_state.username]['level2'] = st.session_state.level2_score
                     config['credentials']['usernames'][st.session_state.username]['level2_passed'] = True
                     st.session_state.level2_passed = True
-
+                    st.session_state.current_question = 0
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
 
@@ -233,7 +222,7 @@ else:
                     config['credentials']['usernames'][st.session_state.username]['level2'] = st.session_state.level2_score
                     config['credentials']['usernames'][st.session_state.username]['level2_passed'] = True
                     st.session_state.level2_passed = True
+                    st.session_state.current_question = 0
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
                     switch_page('index')
-
