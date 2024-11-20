@@ -23,6 +23,24 @@ credentials:
       pretest: 15
       pretest_taken: true
       roles: null
+    hp:
+      email: hnpalit@petra.ac.id
+      first_name: Hy
+      last_name: Pt
+      level1: 0
+      level1_passed: false
+      level2: 0
+      level2_passed: false
+      level3: 0
+      level3_passed: false
+      logged_in: false
+      password: $2b$12$PKcdzY.TZizACXIoCzd9G.VDAqD03Jmq7etFBvAHyh83gwP1Pqkqq
+      password_hint: Belajar!
+      posttest: 0
+      posttest_taken: false
+      pretest: 0
+      pretest_taken: false
+      roles: null
 oauth2:
   google:
     client_id: null
