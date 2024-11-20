@@ -9,55 +9,18 @@ credentials:
       failed_login_attempts: 0
       first_name: Agatha
       last_name: Angelina
-      level1: 0
-      level1_passed: false
+      level1: 15
+      level1_passed: true
       level2: 0
       level2_passed: false
       level3: 0
       level3_passed: false
-      logged_in: false
+      logged_in: true
       password: $2b$12$.seqrSfWbEEuYuEx2uvbDe4L1pIsDvMKjkufPp/0L3rszVWlu7.IO
       password_hint: Agatha18*
       posttest: 0
       posttest_taken: false
-      pretest: 0
-      pretest_taken: false
-      roles: null
-    jon:
-      email: jonathaneka@gmail.com
-      failed_login_attempts: 0
-      first_name: Jonathan
-      last_name: Eka
-      level1: 12
-      level1_passed: true
-      level2: 15
-      level2_passed: true
-      level3: 0
-      level3_passed: false
-      logged_in: true
-      password: $2b$12$HV6aHe//HmFZvIewGS8RWOtEWOuhJbOhLpLJOQaWBWxkq5oK.ldbm
-      password_hint: Jon1234*
-      posttest: 0
-      posttest_taken: false
-      pretest: 0
-      pretest_taken: true
-      roles: null
-    tes1:
-      email: tes1@gmail.com
-      first_name: tes
-      last_name: satu
-      level1: 0
-      level1_passed: false
-      level2: 0
-      level2_passed: false
-      level3: 0
-      level3_passed: false
-      logged_in: false
-      password: $2b$12$2CGvOFTvlTt1A39iGid34O1juqnAIQvEWTdUIQFxA2zSbh57YmbqG
-      password_hint: Tes1234*
-      posttest: 0
-      posttest_taken: false
-      pretest: 0
+      pretest: 15
       pretest_taken: true
       roles: null
 oauth2:
@@ -72,4 +35,4 @@ oauth2:
     tenant_id: null
 pre-authorized:
   emails:
-  - melsby@gmail.com
+  - agathaangel1826@gmail.com
