@@ -25,15 +25,16 @@ authenticator = stauth.Authenticate(
 # Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
-    if st.button(label='Log In'):
+    if st.button("Log in"):
         switch_page("home")
     st.stop()
 
 if st.session_state.level1_passed:
-    st.error("Tingkat ini sudah selesai dikerjakan, silahkan lanjut ke level berikutnya")
+    st.write(f'Skor Anda: {st.session_state.level1_score}')
+    st.error("Level ini sudah selesai dikerjakan, silahkan lanjut ke level berikutnya")
     if st.button("Kembali"):
         switch_page("index")
-    st.stop()
+
 else:
     questions = [
         {
@@ -158,7 +159,16 @@ else:
 
     with st.container():
         if st.session_state.current_question < len(questions):
-            st.warning('Tidak dapat kembali ke soal berikutnya, harap dikerjakan dengan baik sesuai instruksi')
+            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='secondary', use_container_width=False):
+                @st.dialog("🛠️ Pitunjuk Pengerjaan")
+                def help():
+                    st.subheader('💬 Pitunjuk Post Test')
+                    st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
+                    if st.button("Kembali"):
+                        st.rerun()
+
+                if "help" not in st.session_state:
+                    help()
             q = questions[st.session_state.current_question]
             st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])

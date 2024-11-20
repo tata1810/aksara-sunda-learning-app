@@ -22,6 +22,16 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
+def get_pretest(config, username):
+    if 'pretest' not in st.session_state:
+        st.session_state.pretest = config['credentials']['usernames'][username]['pretest']
+    return st.session_state.pretest
+
+if 'pretest_score' not in st.session_state:
+    st.session_state.pretest_score = get_pretest(config, st.session_state.username)
+if 'current_question' not in st.session_state:
+    st.session_state.current_question = 0
+
 # Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
@@ -30,6 +40,7 @@ if not st.session_state.authentication_status:
     st.stop()
 
 if st.session_state.pretest_taken:
+    st.write(f'Skor Anda: {st.session_state.pretest_score}')
     st.error("Pre-test selesai dikerjakan, tidak bisa mengulang!")
     if st.button("Kembali"):
         switch_page("index")
@@ -113,17 +124,21 @@ questions = [
     }
 ]
 
-
-if 'pretest_score' not in st.session_state:
-    st.session_state.pretest_score = 0
-if 'current_question' not in st.session_state:
-    st.session_state.current_question = 0
-
 authenticator.logout()
 st.header('Pre Test Aksara Sunda')
 
 with st.container():
     if st.session_state.current_question < len(questions):
+        if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='secondary', use_container_width=False):
+            @st.dialog("🛠️ Pitunjuk Pengerjaan")
+            def help():
+                st.subheader('💬 Pitunjuk Pre Test')
+                st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
+                if st.button("Kembali"):
+                    st.rerun()
+
+            if "help" not in st.session_state:
+                help()
         q = questions[st.session_state.current_question]
         st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
         st.write(q['question'])

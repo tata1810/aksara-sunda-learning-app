@@ -319,53 +319,45 @@ def main():
         levels = latihan.columns(3)
         with levels[0].container():
             st.image('assets/level1.jpeg', use_column_width=True)
-            if st.button(label='Tingkat 1', type='secondary', use_container_width=True):
-                if not get_level1(config, st.session_state.username):
+            if not get_level1(config, st.session_state.username):
+                if st.button(label='Selesaikan Tingkat 1', type='secondary', use_container_width=True):
                     switch_page('level1')
-                else:
-                    st.warning('''
-                            Tingkat 1 atos rengse dipigawe,mangga teras ka level 2
+                # else:
+                #     st.warning('''
+                #             Tingkat 1 atos rengse dipigawe,mangga teras ka level 2 atawa review soal
 
-                            (Level 1 sudah selesai dikerjakan, silahkan lanjut ke level 2)
-                            ''')
+                #             (Level 1 sudah selesai dikerjakan, silahkan lanjut ke level 2 atau review soal)
+                #             ''')
+            if st.button(label='Review Soal', type='secondary', use_container_width=True):
+                switch_page('review1')
 
         with levels[1].container():
             st.image('assets/level2.jpeg', use_column_width=True)
-            if st.button(label='Tingkat 2', type='secondary', use_container_width=True):
-                if get_level1(config, st.session_state.username):
-                    if not get_level2(config, st.session_state.username):
-                        switch_page('level2')
-                    else:
-                        st.warning('''
-                                Tingkat 2 atos rengse dipigawe,mangga teras ka level 3
-                                
-                                (Level 2 sudah selesai dikerjakan, silahkan lanjut ke level 3)
-                                ''')
-                else:
-                    st.warning('''
-                            Tingkat kawitna tacan dipigawe
+            if get_level1(config, st.session_state.username) and not get_level2(config, st.session_state.username):
+                if st.button(label='Selesaikan Tingkat 2', type='secondary', use_container_width=True):
+                    switch_page('level2')
+                # else:
+                #     st.warning('''
+                #             Tingkat 2 atos rengse dipigawe,mangga teras ka level 3 atawa review soal
                             
-                            (Level sebelumnya belum dikerjakan)
-                            ''')
+                #             (Level 2 sudah selesai dikerjakan, silahkan lanjut ke level 3 atau review soal)
+                #             ''')
+            else:
+                st.warning('Ngalakukeun Tingkat 1')
 
         with levels[2].container():
             st.image('assets/level3.jpeg', use_column_width=True)
-            if st.button(label='Tingkat 3', type='secondary', use_container_width=True):
-                if get_level2(config, st.session_state.username):
-                    if not get_level3(config, st.session_state.username):
+            if get_level2(config, st.session_state.username) and not get_level3(config, st.session_state.username):
+                if st.button(label='Selesaikan Tingkat 3', type='secondary', use_container_width=True):
                         switch_page('level3')
-                    else:
-                        st.warning('''
-                                Tingkat 3 atos rengse dipigawe,mangga ngagawekeun tes ahir
-                                
-                                (Level 3 sudah selesai dikerjakan, silahkan mengerjakan post-test)
-                                ''')
-                else:
-                    st.warning('''
-                            Tingkat kawitna tacan dipigawe
+                # else:
+                #     st.warning('''
+                #             Tingkat 3 atos rengse dipigawe,mangga ngagawekeun tes ahir atawa review soal
                             
-                            (Level sebelumnya belum dikerjakan)
-                            ''')
+                #             (Level 3 sudah selesai dikerjakan, silahkan mengerjakan post-test atau review soal)
+                #             ''')
+            else:
+                st.warning('Ngalakukeun Tingkat 2!')
                     
         if get_level3(config, st.session_state.username):
             st.success('Selamat telah menyelesaikan ketiga tingkat latihan, anda dapat mengambil Post Test')
@@ -492,7 +484,7 @@ if __name__ == '__main__':
             # _, _, _, panduan = st.columns(4)
             if st.button(label='Peryogi Bantuan 🤔', type='secondary', use_container_width=True):
                 @st.dialog("🛠️ Pitunjuk Pengunaan Aplikasi")
-                def vote():
+                def help():
                     st.subheader('💬 Pitunjuk Pengunaan Fitur Latihan sarta Post Test')
                     st.text("- Latihan harus dikerjakan dengan urut mulai dari\ntingkat 1 hingga 3\n- Post Test bisa dikerjakan jika sudah menyelesaikan\nlatihan hingga tingkat 3")
                     st.subheader('💬 Pitunjuk Pengunaan Fitur Konversi')
@@ -503,8 +495,8 @@ if __name__ == '__main__':
                     if st.button("Kembali"):
                         st.rerun()
 
-                if "vote" not in st.session_state:
-                    vote()
+                if "help" not in st.session_state:
+                    help()
                     
         main()
 
