@@ -12,7 +12,6 @@ def main():
     with open('config.yaml', 'r', encoding='utf-8') as file:
         config = yaml.load(file, Loader=SafeLoader)
 
-    # Creating the authenticator object
     authenticator = stauth.Authenticate(
         config['credentials'],
         config['cookie']['name'],
@@ -21,10 +20,9 @@ def main():
     )
 
     back, _, _, _ = st.columns(4)
-    if back.button(label='Back', use_container_width=True):
+    if back.button(label='Kembali', use_container_width=True):
         switch_page('home')
 
-    # Creating a new user registration widget
     try:
         (email_of_registered_user,
             username_of_registered_user,

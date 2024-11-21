@@ -22,7 +22,6 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("Log in"):
@@ -143,13 +142,20 @@ questions = [
     }
 ]
 
-authenticator.logout()
+if 'review1' not in st.session_state:
+    st.session_state.review1 = 0
+if 'current_question1' not in st.session_state:
+    st.session_state.current_question1 = 0
+
+if st.button(label='Kembali'):
+    switch_page('index')
 st.header('Review Tingkat 1')
 
 with st.container():
-    if st.session_state.current_question < len(questions):
-        q = questions[st.session_state.current_question]
-        st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
+    st.write(f'Jawaban Benar: {st.session_state.review1}')
+    if st.session_state.current_question1 < len(questions):
+        q = questions[st.session_state.current_question1]
+        st.subheader(f'Pertanyaan {st.session_state.current_question1 + 1}')
         st.write(q['question'])
 
         if 'image' in q:
@@ -159,28 +165,28 @@ with st.container():
             columns = st.columns(4)
             option_labels = []
             for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                col = columns[idx % 4]  # Alternate between the two columns
+                col = columns[idx % 4]  
 
-                # Display the image in the appropriate column
                 with col:
                     img = Image.open(img_path)
-                    img = img.resize((200, 200))  # Resize image to a uniform size
-                    st.image(img, caption=label, width = 20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                    img = img.resize((200, 200))  
+                    st.image(img, caption=label, width = 20, use_container_width=True)  
                     option_labels.append(label)
                 
         if 'options' in q:
-            user_answer = st.radio('Pilih jawaban:', q['options'], key=f'q{st.session_state.current_question}')
+            user_answer = st.radio('Pilih jawaban:', q['options'], key=f'q{st.session_state.current_question1}')
         else:
-            user_answer = st.text_input('Masukan jawaban:', key=f'q{st.session_state.current_question}')
+            user_answer = st.text_input('Masukan jawaban:', key=f'q{st.session_state.current_question1}')
 
         prev_soal, next_soal = st.columns(2)
         if st.button(label='Jawab', type='primary', use_container_width=True):
             if user_answer.lower() == q['answer'].lower():
-                st.success('jawaban benar')
-            else:
-                st.error('jawaban salah')
-            st.session_state.current_question += 1
+                st.session_state.review1 += 1
+            st.session_state.current_question1 += 1
             st.rerun()
     else:
-        st.session_state.current_question = 0 
-        switch_page('index')
+        st.success('Review Tingkat 1 Selesai')
+        if st.button(label='Kembali', icon='👉🏼'):
+            st.session_state.review1 = 0
+            st.session_state.current_question1 = 0 
+            switch_page('index')

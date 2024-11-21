@@ -22,11 +22,16 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("Log in"):
         switch_page("home")
+    st.stop()
+
+if not st.session_state.level1_passed:
+    st.error("Level sebelumnya belum dikerjakan, silahkan kerjakan level sebelumnya")
+    if st.button("Kembali"):
+        switch_page("index")
     st.stop()
 
 if st.session_state.level2_passed:
@@ -34,6 +39,8 @@ if st.session_state.level2_passed:
     st.error("Level ini sudah selesai dikerjakan, silahkan lanjut ke level berikutnya")
     if st.button("Kembali"):
         switch_page("index")
+    st.stop()
+
 else:
     questions = [
         {
@@ -145,25 +152,22 @@ else:
     if 'current_question' not in st.session_state:
         st.session_state.current_question = 0
 
-    authenticator.logout()
-    if st.button(label='Back'):
-        switch_page('index')
     st.header('Tingkat 2')
 
     with st.container():
         if st.session_state.current_question < len(questions):
-            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='primary', use_container_width=True):
+            header, _, pitunjuk = st.columns(3)
+            if pitunjuk.button(label='Pitunjuk', type='secondary', use_container_width=True):
                 @st.dialog("🛠️ Pitunjuk Pengerjaan")
                 def help():
-                    st.subheader('💬 Pitunjuk Post Test')
-                    st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
-                    if st.button("Kembali"):
-                        st.rerun()
+                    st.subheader('💬 Pitunjuk Tingkat 2')
+                    st.text("- Tingkat 2 terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
 
                 if "help" not in st.session_state:
                     help()
+                    
             q = questions[st.session_state.current_question]
-            st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
+            header.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])
 
             if 'image' in q:
@@ -173,13 +177,11 @@ else:
                 columns = st.columns(4)
                 option_labels = []
                 for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                    col = columns[idx % 4]  # Alternate between the two columns
-
-                    # Display the image in the appropriate column
+                    col = columns[idx % 4]  
                     with col:
                         img = Image.open(img_path)
-                        img = img.resize((200, 200))  # Resize image to a uniform size
-                        st.image(img, caption=label, width = 20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                        img = img.resize((200, 200))  
+                        st.image(img, caption=label, width = 20, use_container_width=True)  
                         option_labels.append(label)
                     
             if 'options' in q:
@@ -192,9 +194,6 @@ else:
             if st.button(label='Jawab', type='primary', use_container_width=True):
                 if user_answer.lower() == q['answer'].lower():
                     st.session_state.level2_score += 1
-                    st.success('jawaban benar')
-                else:
-                    st.error('jawaban salah')
                 st.session_state.current_question += 1
                 st.rerun()
 

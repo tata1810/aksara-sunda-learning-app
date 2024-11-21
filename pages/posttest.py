@@ -12,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state='collapsed'
 )
 
-
 with open('config.yaml', 'r', encoding='utf-8') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
@@ -28,7 +27,6 @@ def get_posttest_taken(config, username):
         st.session_state.posttest_taken = config['credentials']['usernames'][username]['posttest_taken']
     return st.session_state.posttest_taken
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("Log in"):
@@ -131,22 +129,19 @@ else:
     if 'current_question' not in st.session_state:
         st.session_state.current_question = 0
 
-    authenticator.logout()
     st.header('Post Test Aksara Sunda')
 
     with st.container():
         if st.session_state.current_question < len(questions):
-            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='primary', use_container_width=True):
+            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='secondary', use_container_width=False):
                 @st.dialog("🛠️ Pitunjuk Pengerjaan")
                 def help():
                     st.subheader('💬 Pitunjuk Post Test')
                     st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
-                    if st.button("Kembali"):
-                        st.rerun()
 
                 if "help" not in st.session_state:
                     help()
-            st.write(st.session_state.posttest_score)
+
             q = questions[st.session_state.current_question]
             st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])
@@ -158,13 +153,12 @@ else:
                 columns = st.columns(4)
                 option_labels = []
                 for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                    col = columns[idx % 4]  # Alternate between the two columns
+                    col = columns[idx % 4]  
 
-                    # Display the image in the appropriate column
                     with col:
                         img = Image.open(img_path)
-                        img = img.resize((200, 200))  # Resize image to a uniform size
-                        st.image(img, caption=label, width = 20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                        img = img.resize((200, 200))  
+                        st.image(img, caption=label, width = 20, use_container_width=True) 
                         option_labels.append(label)
                     
             if 'options' in q:
@@ -184,7 +178,6 @@ else:
             st.write(f'Skor Anda: {st.session_state.posttest_score}')
 
             if st.button(label='Kembali', icon='📚', type='primary'):
-                # Save Posttest score
                 config['credentials']['usernames'][st.session_state.username]['posttest'] = st.session_state.posttest_score
                 config['credentials']['usernames'][st.session_state.username]['posttest_taken'] = True
 

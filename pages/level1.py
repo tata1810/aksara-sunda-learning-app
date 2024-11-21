@@ -22,7 +22,6 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("Log in"):
@@ -154,23 +153,22 @@ else:
     if 'current_question' not in st.session_state:
         st.session_state.current_question = 0
 
-    authenticator.logout()
     st.header('Tingkat 1')
 
     with st.container():
         if st.session_state.current_question < len(questions):
-            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='secondary', use_container_width=False):
+            header, _, pitunjuk = st.columns(3)
+            if pitunjuk.button(label='Pitunjuk', type='secondary', use_container_width=True):
                 @st.dialog("🛠️ Pitunjuk Pengerjaan")
                 def help():
-                    st.subheader('💬 Pitunjuk Post Test')
-                    st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
-                    if st.button("Kembali"):
-                        st.rerun()
+                    st.subheader('💬 Pitunjuk Tingkat 1')
+                    st.text("- Tingkat 1 terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
 
                 if "help" not in st.session_state:
                     help()
+                    
             q = questions[st.session_state.current_question]
-            st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
+            header.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])
 
             if 'image' in q:
@@ -180,13 +178,12 @@ else:
                 columns = st.columns(4)
                 option_labels = []
                 for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                    col = columns[idx % 4]  # Alternate between the two columns
+                    col = columns[idx % 4]  
 
-                    # Display the image in the appropriate column
                     with col:
                         img = Image.open(img_path)
-                        img = img.resize((200, 200))  # Resize image to a uniform size
-                        st.image(img, caption=label, width = 20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                        img = img.resize((200, 200)) 
+                        st.image(img, caption=label, width = 20, use_container_width=True)  
                         option_labels.append(label)
                     
             if 'options' in q:
@@ -198,27 +195,24 @@ else:
             if st.button(label='Jawab', type='primary', use_container_width=True):
                 if user_answer.lower() == q['answer'].lower():
                     st.session_state.level1_score += 1
-                    st.success('jawaban benar')
-                else:
-                    st.error('jawaban salah')
                 st.session_state.current_question += 1
                 st.rerun()
         else:
             if st.session_state.level1_score < 10:
                 st.error('Nilai anda belum cukup untuk mengambil Level 2, silahkan mengulang. Semangat 💪')
                 st.write(f'Skor Anda: {st.session_state.level1_score}')
-                if st.button(label='Kembali', icon='👉🏼', type='primary'):
+                if st.button(label='Kembali', icon='👉🏼', type='secondary'):
                     st.session_state.level1_score = 0
                     st.session_state.current_question = 0
                     switch_page('index')
-                if st.button(label='Mau mengulang', icon='👉🏼', type='primary'):
+                if st.button(label='Mau mengulang', icon='👉🏼', type='secondary'):
                     st.session_state.level1_score = 0
                     st.session_state.current_question = 0
 
             elif st.session_state.level1_score >= 10 and st.session_state.level1_score <15:
                 st.warning('Level 1 selesai, anda bisa menyempurnakan nilai sekarang atau lanjut ke level selanjutnya')
                 st.write(f'Skor Anda: {st.session_state.level1_score}')
-                if st.button(label='Kembali', icon='👉🏼', type='primary'):
+                if st.button(label='Kembali', icon='👉🏼', type='secondary'):
                     config['credentials']['usernames'][st.session_state.username]['level1'] = st.session_state.level1_score
                     config['credentials']['usernames'][st.session_state.username]['level1_passed'] = True
                     st.session_state.level1_passed = True
@@ -226,13 +220,13 @@ else:
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
                     switch_page('index')
-                if st.button(label='Mau mengulang', icon='👉🏼', type='primary'):
+                if st.button(label='Mau mengulang', icon='👉🏼', type='secondary'):
                     st.session_state.level1_score = 0
                     st.session_state.current_question = 0
             else:
                 st.success('Level 1 selesai dengan nilai sempurna 🎉')
                 st.write(f'Skor Anda: {st.session_state.level1_score}')
-                if st.button(label='Kembali', icon='👉🏼', type='primary'):
+                if st.button(label='Kembali', icon='👉🏼', type='secondary'):
                     config['credentials']['usernames'][st.session_state.username]['level1'] = st.session_state.level1_score
                     config['credentials']['usernames'][st.session_state.username]['level1_passed'] = True
                     st.session_state.level1_passed = True

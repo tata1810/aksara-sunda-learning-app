@@ -32,7 +32,6 @@ if 'pretest_score' not in st.session_state:
 if 'current_question' not in st.session_state:
     st.session_state.current_question = 0
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("log in"):
@@ -124,7 +123,6 @@ questions = [
     }
 ]
 
-authenticator.logout()
 st.header('Pre Test Aksara Sunda')
 
 with st.container():
@@ -134,8 +132,6 @@ with st.container():
             def help():
                 st.subheader('💬 Pitunjuk Pre Test')
                 st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
-                if st.button("Kembali"):
-                    st.rerun()
 
             if "help" not in st.session_state:
                 help()
@@ -150,13 +146,12 @@ with st.container():
             columns = st.columns(4)
             option_labels = []
             for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                col = columns[idx % 4]  # Alternate between the two columns
+                col = columns[idx % 4] 
 
-                # Display the image in the appropriate column
                 with col:
                     img = Image.open(img_path)
-                    img = img.resize((200, 200))  # Resize image to a uniform size
-                    st.image(img, caption=label, width = 20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                    img = img.resize((200, 200))  
+                    st.image(img, caption=label, width = 20, use_container_width=True)  
                     option_labels.append(label)
                 
         if 'options' in q:
@@ -176,7 +171,6 @@ with st.container():
         st.write(f'Skor Anda: {st.session_state.pretest_score}')
 
         if st.button(label='Mulai Diajar', icon='📚', type='primary'):
-            # Save Pretest score
             config['credentials']['usernames'][st.session_state.username]['pretest'] = st.session_state.pretest_score
             config['credentials']['usernames'][st.session_state.username]['pretest_taken'] = True
 

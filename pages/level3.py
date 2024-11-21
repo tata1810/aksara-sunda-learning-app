@@ -23,20 +23,25 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Restrict access if not authenticated
 if not st.session_state.authentication_status:
     st.warning("Belum log in, tidak memiliki akses")
     if st.button("Log in"):
         switch_page("home")
     st.stop()
 
-# if 'level3_passed' not in st.session_state:
+if not st.session_state.level2_passed:
+    st.error("Level sebelumnya belum dikerjakan, silahkan kerjakan level sebelumnya")
+    if st.button("Kembali"):
+        switch_page("index")
+    st.stop()
+
 if st.session_state.level3_passed:
     st.write(f'Skor Anda: {st.session_state.level3_score}')
     st.error("Level ini sudah selesai dikerjakan, silahkan lanjut ke level berikutnya")
     if st.button("Kembali"):
         switch_page("index")
     st.stop()
+
 else:
     questions = [
         {
@@ -146,23 +151,22 @@ else:
     if 'current_question' not in st.session_state:
         st.session_state.current_question = 0
 
-    authenticator.logout()
     st.header('Tingkat 3')
 
     with st.container():
         if st.session_state.current_question < len(questions):
-            if st.button(label='⚠️ Lihat Pitunjuk Pengerjaan Sebelum Mengerjakan Soal', type='primary', use_container_width=True):
+            header, _, pitunjuk = st.columns(3)
+            if pitunjuk.button(label='Pitunjuk', type='secondary', use_container_width=True):
                 @st.dialog("🛠️ Pitunjuk Pengerjaan")
                 def help():
-                    st.subheader('💬 Pitunjuk Post Test')
-                    st.text("- Pre Test terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
-                    if st.button("Kembali"):
-                        st.rerun()
+                    st.subheader('💬 Pitunjuk Tingkat 3')
+                    st.text("- Tingkat 3 terdiri dari 15 soal\n- Pastikan jawaban anda benar karena tidak dapat\nkembali ke soal berikutnya.\n- Ikuti petunjuk contoh penulisan jawaban\n")
 
                 if "help" not in st.session_state:
                     help()
+                    
             q = questions[st.session_state.current_question]
-            st.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
+            header.subheader(f'Pertanyaan {st.session_state.current_question + 1}')
             st.write(q['question'])
 
             if 'image' in q:
@@ -172,13 +176,12 @@ else:
                 columns = st.columns(4)
                 option_labels = []
                 for idx, (label, img_path) in enumerate(q["image_options"].items()):
-                    col = columns[idx % 4]  # Alternate between the two columns
+                    col = columns[idx % 4]  
 
-                    # Display the image in the appropriate column
                     with col:
                         img = Image.open(img_path)
-                        img = img.resize((200, 200))  # Resize image to a uniform size
-                        st.image(img, caption=label, width=20, use_column_width=True)  # Ensures images are responsive and fit in the columns
+                        img = img.resize((200, 200))  
+                        st.image(img, caption=label, width = 20, use_container_width=True)  
                         option_labels.append(label)
                     
             if 'options' in q:
@@ -188,43 +191,36 @@ else:
 
             prev_soal, next_soal = st.columns(2)
 
-            if st.session_state.current_question < len(questions) - 1:
-                st.warning('Tidak dapat kembali ke soal berikutnya, harap dikerjakan dengan baik sesuai instruksi')
-
             if st.button(label='Jawab', type='primary', use_container_width=True):
                 if user_answer.lower() == q['answer'].lower():
-                    st.session_state.level3_score += 1
-                    st.success('jawaban benar')
-                else:
-                    st.error('jawaban salah')
+                    st.session_state.level2_score += 1
                 st.session_state.current_question += 1
                 st.rerun()
+
         else:
             if st.session_state.level3_score < 10:
-                st.error('Nilai anda belum cukup untuk mengambil post-test, silahkan mengulang. Semangat 💪')
+                st.error('Nilai anda belum cukup untuk mengambil Post Test, silahkan mengulang. Semangat 💪')
                 st.write(f'Skor Anda: {st.session_state.level3_score}')
                 if st.button(label='Kembali', icon='👉🏼'):
                     st.session_state.level3_score = 0
                     st.session_state.current_question = 0
                     switch_page('index')
-                if st.button(label='Ambil Tes', icon='👉🏼'):
+                if st.button(label='Mau mengulang', icon='👉🏼'):
                     st.session_state.level3_score = 0
                     st.session_state.current_question = 0
 
             elif st.session_state.level3_score >= 10 and st.session_state.level3_score <15:
-                st.warning('Level 3 selesai, anda bisa menyempurnakan nilai sekarang atau lanjut ke post-test')
-                st.write(f'Skor Anda: {st.session_state.level3_score}')
+                st.warning('Level 3 selesai, anda bisa menyempurnakan nilai sekarang atau lanjut ke level selanjutnya')
+                st.write(f'Skor Anda: {st.session_state.level2_score}')
                 if st.button(label='Kembali', icon='👉🏼'):
                     config['credentials']['usernames'][st.session_state.username]['level3'] = st.session_state.level3_score
                     config['credentials']['usernames'][st.session_state.username]['level3_passed'] = True
                     st.session_state.level3_passed = True
                     st.session_state.current_question = 0
-
                     with open('config.yaml', 'w', encoding='utf-8') as file:
                         yaml.dump(config, file, default_flow_style=False)    
-                    
-                    switch_page('index')
 
+                    switch_page('index')
                 if st.button(label='Mau mengulang', icon='👉🏼'):
                     st.session_state.level3_score = 0
                     st.session_state.current_question = 0
@@ -236,8 +232,6 @@ else:
                     config['credentials']['usernames'][st.session_state.username]['level3_passed'] = True
                     st.session_state.level3_passed = True
                     st.session_state.current_question = 0
-
                     with open('config.yaml', 'w', encoding='utf-8') as file:
-                        yaml.dump(config, file, default_flow_style=False) 
-
+                        yaml.dump(config, file, default_flow_style=False)    
                     switch_page('index')
