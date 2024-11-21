@@ -51,6 +51,8 @@ class CombinedModels:
         detections = self.sort_detections(detections)
 
         detected_labels = []
+        # eff_labels = []
+        # yol_labels =[]
         for _, (x1, y1, x2, y2, confidence, names) in enumerate(detections):
             cropped = yolo_image[int(float(y1)): int(float(y2)),
                                 int(float(x1)): int(float(x2))]
@@ -66,9 +68,12 @@ class CombinedModels:
             else:
                 final_class = names
             
-            detected_labels.append(final_class)
+            # eff_labels.append(effnet_names)
+            # yol_labels.append(names)
+            detected_labels.append(names)
 
         return self.arrange_words(detected_labels)
+        # return self.arrange_words(detected_labels), self.arrange_words(eff_labels), self.arrange_words(yol_labels)
     
     def preprocess_for_yolo(self, image_path):
         image = Image.open(image_path)
@@ -79,7 +84,7 @@ class CombinedModels:
         return yolo_input
     
     def preprocess_for_effnet(self, image):
-        image = cv2.resize(image, (150, 150), interpolation=cv2.INTER_LINEAR)
+        image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_LINEAR)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image_array = np.array(image)
         image_array = np.stack((image_array,) * 3, axis=-1)
